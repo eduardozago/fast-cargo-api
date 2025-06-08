@@ -25,6 +25,14 @@ export class DeliveryDriver extends Entity<DeliveryDriverProps> {
     return this.props.password
   }
 
+  set name(name: string) {
+    this.props.name = name
+  }
+
+  set password(password: string) {
+    this.props.password = password
+  }
+
   static create(props: DeliveryDriverProps, id?: UniqueEntityID) {
     const deliverDriver = new DeliveryDriver(props, id)
 
