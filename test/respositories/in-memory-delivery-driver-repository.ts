@@ -35,4 +35,12 @@ export class InMemoryDeliveryDriverRepository extends DeliveryDriverRepository {
 
     this.items[itemIndex] = deliverDriver
   }
+
+  async delete(deliverDriver: DeliveryDriver): Promise<void> {
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === deliverDriver.id,
+    )
+
+    this.items.splice(itemIndex, 1)
+  }
 }
