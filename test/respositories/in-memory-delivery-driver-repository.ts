@@ -27,4 +27,12 @@ export class InMemoryDeliveryDriverRepository extends DeliveryDriverRepository {
   async create(deliverDriver: DeliveryDriver) {
     this.items.push(deliverDriver)
   }
+
+  async save(deliverDriver: DeliveryDriver): Promise<void> {
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === deliverDriver.id,
+    )
+
+    this.items[itemIndex] = deliverDriver
+  }
 }
