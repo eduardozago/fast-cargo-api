@@ -5,4 +5,5 @@ export abstract class DeliveryDriverRepository {
   abstract findByTaxId(taxId: string): Promise<DeliveryDriver | null>
   abstract create(deliverDriver: DeliveryDriver): Promise<void>
   abstract save(deliverDriver: DeliveryDriver): Promise<void>
+  abstract delete(deliverDriver: DeliveryDriver): Promise<void>
 }
