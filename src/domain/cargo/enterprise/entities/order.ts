@@ -10,7 +10,7 @@ export enum OrderStatus {
 }
 
 export interface OrderProps {
-  deliveryManId: UniqueEntityID
+  deliveryDriverId: UniqueEntityID
   recipientId: UniqueEntityID
   status: OrderStatus
   createdAt: Date
