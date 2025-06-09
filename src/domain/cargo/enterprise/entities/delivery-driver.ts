@@ -1,11 +1,14 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { UserRole } from './user-role'
+import { Optional } from '@/core/types/optional'
 
 export interface DeliveryDriverProps {
   orderId?: UniqueEntityID
   taxId: string
   name: string
   password: string
+  role: UserRole
 }
 
 export class DeliveryDriver extends Entity<DeliveryDriverProps> {
@@ -25,6 +28,10 @@ export class DeliveryDriver extends Entity<DeliveryDriverProps> {
     return this.props.password
   }
 
+  get role() {
+    return this.props.role
+  }
+
   set name(name: string) {
     this.props.name = name
   }
@@ -33,8 +40,17 @@ export class DeliveryDriver extends Entity<DeliveryDriverProps> {
     this.props.password = password
   }
 
-  static create(props: DeliveryDriverProps, id?: UniqueEntityID) {
-    const deliverDriver = new DeliveryDriver(props, id)
+  static create(
+    props: Optional<DeliveryDriverProps, 'role'>,
+    id?: UniqueEntityID,
+  ) {
+    const deliverDriver = new DeliveryDriver(
+      {
+        ...props,
+        role: props.role ?? UserRole.DELIVERY_DRIVER,
+      },
+      id,
+    )
 
     return deliverDriver
   }
