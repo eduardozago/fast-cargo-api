@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { DeliveryDriverRepository } from '@/domain/cargo/application/repositories/delivery-driver-repository'
 import { DeliveryDriver } from '@/domain/cargo/enterprise/entities/delivery-driver'
 
@@ -22,6 +23,12 @@ export class InMemoryDeliveryDriverRepository extends DeliveryDriverRepository {
     }
 
     return deliverDriver
+  }
+
+  async findAll({ page }: PaginationParams): Promise<DeliveryDriver[]> {
+    const deliverDrivers = this.items.slice((page - 1) * 10, page * 10)
+
+    return deliverDrivers
   }
 
   async create(deliverDriver: DeliveryDriver) {
