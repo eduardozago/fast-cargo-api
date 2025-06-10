@@ -20,6 +20,14 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.address
   }
 
+  set name(name: string) {
+    this.props.name = name
+  }
+
+  set address(address: string) {
+    this.props.address = address
+  }
+
   static create(props: RecipientProps, id?: UniqueEntityID) {
     const recipient = new Recipient(props, id)
 
