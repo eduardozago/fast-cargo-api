@@ -5,14 +5,14 @@ import { makeRecipient } from 'test/factories/make-recipient'
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let sut: GetRecipientUseCase
 
-describe('Get Delivery Driver', () => {
+describe('Get Recipient', () => {
   beforeEach(() => {
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
 
     sut = new GetRecipientUseCase(inMemoryRecipientRepository)
   })
 
-  it('should be able to add a delivery driver', async () => {
+  it('should be able to add a recipient', async () => {
     const recipient = makeRecipient()
 
     inMemoryRecipientRepository.create(recipient)
