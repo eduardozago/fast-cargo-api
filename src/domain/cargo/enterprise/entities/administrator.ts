@@ -3,7 +3,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { UserRole } from './user-role'
 import { Optional } from '@/core/types/optional'
 
-export interface DeliveryDriverProps {
+export interface AdministratorProps {
   orderId?: UniqueEntityID
   taxId: string
   name: string
@@ -11,7 +11,7 @@ export interface DeliveryDriverProps {
   role: UserRole
 }
 
-export class DeliveryDriver extends Entity<DeliveryDriverProps> {
+export class Administrator extends Entity<AdministratorProps> {
   get orderId() {
     return this.props.orderId
   }
@@ -41,13 +41,13 @@ export class DeliveryDriver extends Entity<DeliveryDriverProps> {
   }
 
   static create(
-    props: Optional<DeliveryDriverProps, 'role'>,
+    props: Optional<AdministratorProps, 'role'>,
     id?: UniqueEntityID,
   ) {
-    const deliverDriver = new DeliveryDriver(
+    const deliverDriver = new Administrator(
       {
         ...props,
-        role: props.role ?? UserRole.DELIVERY_DRIVER,
+        role: props.role ?? UserRole.ADMIN,
       },
       id,
     )
