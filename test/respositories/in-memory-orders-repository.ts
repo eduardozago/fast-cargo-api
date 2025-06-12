@@ -13,4 +13,8 @@ export class InMemoryOrdersRepository extends OrdersRepository {
 
     return order
   }
+
+  async create(order: Order): Promise<void> {
+    this.items.push(order)
+  }
 }
