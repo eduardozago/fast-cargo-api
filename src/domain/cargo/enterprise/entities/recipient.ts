@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface RecipientProps {
-  orderId: UniqueEntityID
+  orderId?: UniqueEntityID
   name: string
   address: string
 }
