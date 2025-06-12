@@ -1,14 +1,11 @@
 import { Either, left, right } from '@/core/either'
-import { OrdersRepository } from '../../repositories/orders-repository'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
 import { Recipient } from '@/domain/cargo/enterprise/entities/recipient'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '../errors/not-allowed-error'
 import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
 
 interface AddRecipientUseCaseRequest {
-  orderId: string
   name: string
   address: string
   role: string
@@ -22,13 +19,9 @@ type AddRecipientUseCaseResponse = Either<
 >
 
 export class AddRecipientUseCase {
-  constructor(
-    private ordersRepository: OrdersRepository,
-    private recipientRepository: RecipientsRepository,
-  ) {}
+  constructor(private recipientRepository: RecipientsRepository) {}
 
   async execute({
-    orderId,
     name,
     address,
     role,
@@ -45,14 +38,7 @@ export class AddRecipientUseCase {
       return left(new NotAllowedError())
     }
 
-    const order = await this.ordersRepository.findById(orderId)
-
-    if (!order) {
-      return left(new ResourceNotFoundError())
-    }
-
     const recipient = Recipient.create({
-      orderId: new UniqueEntityID(orderId),
       name,
       address,
     })
