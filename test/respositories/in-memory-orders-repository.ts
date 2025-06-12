@@ -17,4 +17,10 @@ export class InMemoryOrdersRepository extends OrdersRepository {
   async create(order: Order): Promise<void> {
     this.items.push(order)
   }
+
+  async delete(order: Order): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === order.id)
+
+    this.items.splice(itemIndex, 1)
+  }
 }
