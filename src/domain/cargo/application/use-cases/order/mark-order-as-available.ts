@@ -44,7 +44,7 @@ export class MarkOrderAsAvailableUseCase {
     }
 
     if (order.status !== OrderStatus.ADDED) {
-      return left(new InvalidOrderStatusError(order.status))
+      return left(new InvalidOrderStatusError(order.status, OrderStatus.ADDED))
     }
 
     order.status = OrderStatus.AVAILABLE
