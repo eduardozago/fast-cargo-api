@@ -1,9 +1,5 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import {
-  Order,
-  OrderProps,
-  OrderStatus,
-} from '@/domain/cargo/enterprise/entities/order'
+import { Order, OrderProps } from '@/domain/cargo/enterprise/entities/order'
 
 export function makeOrder(
   override: Partial<OrderProps> = {},
@@ -13,7 +9,6 @@ export function makeOrder(
     {
       deliveryDriverId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
-      status: OrderStatus.WAITING,
       ...override,
     },
     id,
