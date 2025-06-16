@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
 import { Order } from '@/domain/cargo/enterprise/entities/order'
 

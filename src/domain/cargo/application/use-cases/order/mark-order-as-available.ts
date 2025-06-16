@@ -1,10 +1,10 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
 import { Order, OrderStatus } from '@/domain/cargo/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
-import { UnauthorizedError } from '../errors/unauthorized-error'
+import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
 
 interface MarkOrderAsAvailableUseCaseRequest {
   orderId: string
