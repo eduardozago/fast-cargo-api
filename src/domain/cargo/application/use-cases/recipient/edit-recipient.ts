@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Recipient } from '@/domain/cargo/enterprise/entities/recipient'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
 import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 interface EditRecipientUseCaseRequest {
   recipientId: string
