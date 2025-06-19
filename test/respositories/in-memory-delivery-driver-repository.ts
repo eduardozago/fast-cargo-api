@@ -1,6 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import { DeliveryDriverRepository } from '@/domain/cargo/application/repositories/delivery-driver-repository'
-import { DeliveryDriver } from '@/domain/cargo/enterprise/entities/delivery-driver'
+import { DeliveryDriverRepository } from '@/domain/delivery/application/repositories/delivery-driver-repository'
+import { DeliveryDriver } from '@/domain/delivery/enterprise/entities/delivery-driver'
 
 export class InMemoryDeliveryDriverRepository extends DeliveryDriverRepository {
   public items: DeliveryDriver[] = []

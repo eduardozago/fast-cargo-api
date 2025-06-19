@@ -1,23 +1,33 @@
 import { Either, left, right } from '@/core/either'
+import { DeliveryDriver } from '@/domain/delivery/enterprise/entities/delivery-driver'
 import { DeliveryDriverRepository } from '../../repositories/delivery-driver-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
-interface DeleteDeliveryDriverUseCaseRequest {
+interface EditDeliveryDriverUseCaseRequest {
   deliveryDriverId: string
+  name: string
+  password: string
   role: string
 }
 
-type DeleteDeliveryDriverUseCaseResponse = Either<ResourceNotFoundError, null>
+type EditDeliveryDriverUseCaseResponse = Either<
+  NotAllowedError | ResourceNotFoundError,
+  {
+    deliveryDriver: DeliveryDriver
+  }
+>
 
-export class DeleteDeliveryDriverUseCase {
+export class EditDeliveryDriverUseCase {
   constructor(private deliveryDriverRepository: DeliveryDriverRepository) {}
 
   async execute({
     deliveryDriverId,
+    name,
+    password,
     role,
-  }: DeleteDeliveryDriverUseCaseRequest): Promise<DeleteDeliveryDriverUseCaseResponse> {
+  }: EditDeliveryDriverUseCaseRequest): Promise<EditDeliveryDriverUseCaseResponse> {
     const isValidRole = Object.values(UserRole).includes(role as UserRole)
 
     if (!isValidRole) {
@@ -37,8 +47,13 @@ export class DeleteDeliveryDriverUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    await this.deliveryDriverRepository.delete(deliveryDriver)
+    deliveryDriver.name = name
+    deliveryDriver.password = password
 
-    return right(null)
+    await this.deliveryDriverRepository.save(deliveryDriver)
+
+    return right({
+      deliveryDriver,
+    })
   }
 }

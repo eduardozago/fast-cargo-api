@@ -1,22 +1,24 @@
 import { InMemoryOrdersRepository } from 'test/respositories/in-memory-orders-repository'
 import { makeOrder } from 'test/factories/make-order'
-import { MarkOrderAsAvailableUseCase } from './mark-order-as-available'
 import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
-import { OrderStatus } from '@/domain/cargo/enterprise/entities/order'
+import { OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
+import { ReturnOrderUseCase } from './return-order'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: MarkOrderAsAvailableUseCase
+let sut: ReturnOrderUseCase
 
-describe('Mark Order as Available', () => {
+describe('Return Order', () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository()
 
-    sut = new MarkOrderAsAvailableUseCase(inMemoryOrdersRepository)
+    sut = new ReturnOrderUseCase(inMemoryOrdersRepository)
   })
 
-  it('should be able to mark an order as available', async () => {
-    const order = makeOrder()
+  it('should be able return an order', async () => {
+    const order = makeOrder({
+      status: OrderStatus.PICKED_UP,
+    })
 
     inMemoryOrdersRepository.items.push(order)
 
@@ -25,11 +27,13 @@ describe('Mark Order as Available', () => {
       role: 'ADMIN',
     })
 
+    console.log(result)
+
     expect(result.isRight()).toBe(true)
     expect(result.value?.order.id).toEqual(order.id)
   })
 
-  it('should not authorized to mark an order as available if the user is not admin', async () => {
+  it('should not authorized to return an order if the user is not admin', async () => {
     const order = makeOrder()
 
     inMemoryOrdersRepository.items.push(order)
@@ -43,7 +47,7 @@ describe('Mark Order as Available', () => {
     expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 
-  it('should not able to mark an order as available if the status order is not "added"', async () => {
+  it('should not able to return an order if the status order is not "PICKED_UP"', async () => {
     const order = makeOrder({
       status: OrderStatus.DELIVERED,
     })

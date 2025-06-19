@@ -1,5 +1,5 @@
-import { OrdersRepository } from '@/domain/cargo/application/repositories/orders-repository'
-import { Order } from '@/domain/cargo/enterprise/entities/order'
+import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository'
+import { Order } from '@/domain/delivery/enterprise/entities/order'
 
 export class InMemoryOrdersRepository extends OrdersRepository {
   public items: Order[] = []

@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Recipient } from '@/domain/cargo/enterprise/entities/recipient'
+import { Recipient } from '@/domain/delivery/enterprise/entities/recipient'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
 
 interface GetRecipientUseCaseRequest {

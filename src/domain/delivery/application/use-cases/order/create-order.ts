@@ -4,8 +4,8 @@ import { RecipientsRepository } from '../../repositories/recipients-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
-import { Order } from '@/domain/cargo/enterprise/entities/order'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
+import { Order } from '@/domain/delivery/enterprise/entities/order'
 
 interface CreateOrderUseCaseRequest {
   recipientId: string

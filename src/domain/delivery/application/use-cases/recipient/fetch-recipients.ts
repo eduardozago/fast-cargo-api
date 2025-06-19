@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { Recipient } from '@/domain/cargo/enterprise/entities/recipient'
+import { Recipient } from '@/domain/delivery/enterprise/entities/recipient'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
 
 interface FetchRecipientsUseCaseRequest {

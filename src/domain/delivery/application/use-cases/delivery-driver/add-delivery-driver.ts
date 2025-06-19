@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
-import { DeliveryDriver } from '@/domain/cargo/enterprise/entities/delivery-driver'
+import { DeliveryDriver } from '@/domain/delivery/enterprise/entities/delivery-driver'
 import { DeliveryDriverRepository } from '../../repositories/delivery-driver-repository'
 import { ResourceAlreadyExistsError } from '@/core/errors/errors/resource-already-exists-error'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 interface AddDeliveryDriverUseCaseRequest {

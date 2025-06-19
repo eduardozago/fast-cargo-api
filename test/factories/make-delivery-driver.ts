@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   DeliveryDriver,
   DeliveryDriverProps,
-} from '@/domain/cargo/enterprise/entities/delivery-driver'
+} from '@/domain/delivery/enterprise/entities/delivery-driver'
 import { faker } from '@faker-js/faker'
 
 export function makeDeliveryDriver(

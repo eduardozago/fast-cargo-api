@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Order } from '@/domain/cargo/enterprise/entities/order'
+import { Order } from '@/domain/delivery/enterprise/entities/order'
 import { OrdersRepository } from '../../repositories/orders-repository'
 
 interface GetOrderUseCaseRequest {

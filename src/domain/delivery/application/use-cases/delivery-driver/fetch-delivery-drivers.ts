@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { DeliveryDriver } from '@/domain/cargo/enterprise/entities/delivery-driver'
+import { DeliveryDriver } from '@/domain/delivery/enterprise/entities/delivery-driver'
 import { DeliveryDriverRepository } from '../../repositories/delivery-driver-repository'
 
 interface FetchDeliveryDriversUseCaseRequest {

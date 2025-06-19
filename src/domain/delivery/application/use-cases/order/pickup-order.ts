@@ -1,30 +1,36 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
-import { Order, OrderStatus } from '@/domain/cargo/enterprise/entities/order'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
+import { Order, OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
 import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
+import { DeliveryDriverRepository } from '../../repositories/delivery-driver-repository'
 
-interface ReturnOrderUseCaseRequest {
+interface PickupOrderUseCaseRequest {
   orderId: string
+  deliveryDriverId: string
   role: string
 }
 
-type ReturnOrderUseCaseResponse = Either<
+type PickupOrderUseCaseResponse = Either<
   UnauthorizedError | ResourceNotFoundError | InvalidOrderStatusError,
   {
     order: Order
   }
 >
 
-export class ReturnOrderUseCase {
-  constructor(private ordersRepository: OrdersRepository) {}
+export class PickupOrderUseCase {
+  constructor(
+    private ordersRepository: OrdersRepository,
+    private deliveryDriversRepository: DeliveryDriverRepository,
+  ) {}
 
   async execute({
     orderId,
+    deliveryDriverId,
     role,
-  }: ReturnOrderUseCaseRequest): Promise<ReturnOrderUseCaseResponse> {
+  }: PickupOrderUseCaseRequest): Promise<PickupOrderUseCaseResponse> {
     const isValidRole = Object.values(UserRole).includes(role as UserRole)
 
     if (!isValidRole) {
@@ -43,13 +49,20 @@ export class ReturnOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (order.status !== OrderStatus.PICKED_UP) {
+    const deliveryDriver =
+      await this.deliveryDriversRepository.findById(deliveryDriverId)
+
+    if (!deliveryDriver) {
+      return left(new ResourceNotFoundError())
+    }
+
+    if (order.status !== OrderStatus.AVAILABLE) {
       return left(
-        new InvalidOrderStatusError(order.status, OrderStatus.PICKED_UP),
+        new InvalidOrderStatusError(order.status, OrderStatus.AVAILABLE),
       )
     }
 
-    order.status = OrderStatus.RETURNED
+    order.status = OrderStatus.PICKED_UP
 
     await this.ordersRepository.save(order)
 

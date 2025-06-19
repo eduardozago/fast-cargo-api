@@ -1,30 +1,30 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
-import { Order, OrderStatus } from '@/domain/cargo/enterprise/entities/order'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
+import { Order, OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
 import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
 
-interface MarkOrderAsAvailableUseCaseRequest {
+interface ReturnOrderUseCaseRequest {
   orderId: string
   role: string
 }
 
-type MarkOrderAsAvailableUseCaseResponse = Either<
+type ReturnOrderUseCaseResponse = Either<
   UnauthorizedError | ResourceNotFoundError | InvalidOrderStatusError,
   {
     order: Order
   }
 >
 
-export class MarkOrderAsAvailableUseCase {
+export class ReturnOrderUseCase {
   constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,
     role,
-  }: MarkOrderAsAvailableUseCaseRequest): Promise<MarkOrderAsAvailableUseCaseResponse> {
+  }: ReturnOrderUseCaseRequest): Promise<ReturnOrderUseCaseResponse> {
     const isValidRole = Object.values(UserRole).includes(role as UserRole)
 
     if (!isValidRole) {
@@ -43,11 +43,13 @@ export class MarkOrderAsAvailableUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (order.status !== OrderStatus.ADDED) {
-      return left(new InvalidOrderStatusError(order.status, OrderStatus.ADDED))
+    if (order.status !== OrderStatus.PICKED_UP) {
+      return left(
+        new InvalidOrderStatusError(order.status, OrderStatus.PICKED_UP),
+      )
     }
 
-    order.status = OrderStatus.AVAILABLE
+    order.status = OrderStatus.RETURNED
 
     await this.ordersRepository.save(order)
 

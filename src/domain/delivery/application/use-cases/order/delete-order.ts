@@ -1,26 +1,26 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { RecipientsRepository } from '../../repositories/recipients-repository'
-import { UserRole } from '@/domain/cargo/enterprise/entities/user-role'
+import { OrdersRepository } from '../../repositories/orders-repository'
+import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
-interface DeleteRecipientUseCaseRequest {
-  recipientId: string
+interface DeleteOrderUseCaseRequest {
+  orderId: string
   role: string
 }
 
-type DeleteRecipientUseCaseResponse = Either<
+type DeleteOrderUseCaseResponse = Either<
   NotAllowedError | ResourceNotFoundError,
   null
 >
 
-export class DeleteRecipientUseCase {
-  constructor(private recipientRepository: RecipientsRepository) {}
+export class DeleteOrderUseCase {
+  constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
-    recipientId,
+    orderId,
     role,
-  }: DeleteRecipientUseCaseRequest): Promise<DeleteRecipientUseCaseResponse> {
+  }: DeleteOrderUseCaseRequest): Promise<DeleteOrderUseCaseResponse> {
     const isValidRole = Object.values(UserRole).includes(role as UserRole)
 
     if (!isValidRole) {
@@ -33,13 +33,13 @@ export class DeleteRecipientUseCase {
       return left(new NotAllowedError())
     }
 
-    const recipient = await this.recipientRepository.findById(recipientId)
+    const order = await this.ordersRepository.findById(orderId)
 
-    if (!recipient) {
+    if (!order) {
       return left(new ResourceNotFoundError())
     }
 
-    await this.recipientRepository.delete(recipient)
+    await this.ordersRepository.delete(order)
 
     return right(null)
   }
