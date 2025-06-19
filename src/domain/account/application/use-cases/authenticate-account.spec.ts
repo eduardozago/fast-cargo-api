@@ -1,9 +1,6 @@
 import { InMemoryAccountsRepository } from 'test/respositories/in-memory-accounts-repository'
-import { CreateAccountUseCase } from './create-account'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { makeAccount } from 'test/factories/make-account'
-import { InvalidAccountRoleError } from '../errors/invalid-account-role-error'
-import { AccountAlreadyExistsError } from '../errors/account-already-exists-error'
 import { AuthenticateAccountUseCase } from './authenticate-account'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
 
