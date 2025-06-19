@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryRecipientRepository } from 'test/respositories/in-memory-recipients-repository'
 import { DeleteRecipientUseCase } from './delete-recipient'
 import { makeRecipient } from 'test/factories/make-recipient'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let sut: DeleteRecipientUseCase

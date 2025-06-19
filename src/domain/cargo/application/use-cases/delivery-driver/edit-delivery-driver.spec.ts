@@ -2,7 +2,7 @@ import { InMemoryDeliveryDriverRepository } from 'test/respositories/in-memory-d
 import { makeDeliveryDriver } from 'test/factories/make-delivery-driver'
 import { EditDeliveryDriverUseCase } from './edit-delivery-driver'
 import { makeAdministrator } from 'test/factories/make-administrator'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryDeliveryDriverRepository: InMemoryDeliveryDriverRepository
 let sut: EditDeliveryDriverUseCase

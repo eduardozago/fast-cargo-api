@@ -1,7 +1,7 @@
 import { InMemoryRecipientRepository } from 'test/respositories/in-memory-recipients-repository'
 import { InMemoryOrdersRepository } from 'test/respositories/in-memory-orders-repository'
 import { makeRecipient } from 'test/factories/make-recipient'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { CreateOrderUseCase } from './create-order'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository

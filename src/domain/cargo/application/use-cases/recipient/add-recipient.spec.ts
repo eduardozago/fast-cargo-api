@@ -1,7 +1,7 @@
 import { AddRecipientUseCase } from './add-recipient'
 import { InMemoryRecipientRepository } from 'test/respositories/in-memory-recipients-repository'
 import { makeRecipient } from 'test/factories/make-recipient'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let sut: AddRecipientUseCase

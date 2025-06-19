@@ -1,7 +1,7 @@
 import { InMemoryOrdersRepository } from 'test/respositories/in-memory-orders-repository'
 import { makeOrder } from 'test/factories/make-order'
 import { MarkOrderAsAvailableUseCase } from './mark-order-as-available'
-import { UnauthorizedError } from '../errors/unauthorized-error'
+import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
 import { OrderStatus } from '@/domain/cargo/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
 

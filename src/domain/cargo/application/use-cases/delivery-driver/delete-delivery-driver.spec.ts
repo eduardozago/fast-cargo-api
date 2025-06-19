@@ -3,7 +3,7 @@ import { makeDeliveryDriver } from 'test/factories/make-delivery-driver'
 import { DeleteDeliveryDriverUseCase } from './delete-delivery-driver'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeAdministrator } from 'test/factories/make-administrator'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryDeliveryDriverRepository: InMemoryDeliveryDriverRepository
 let sut: DeleteDeliveryDriverUseCase

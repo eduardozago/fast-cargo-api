@@ -1,6 +1,6 @@
 import { DeleteOrderUseCase } from './delete-order'
 import { makeOrder } from 'test/factories/make-order'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryOrdersRepository } from 'test/respositories/in-memory-orders-repository'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository

@@ -1,9 +1,9 @@
 import { InMemoryDeliveryDriverRepository } from 'test/respositories/in-memory-delivery-driver-repository'
 import { AddDeliveryDriverUseCase } from './add-delivery-driver'
 import { makeDeliveryDriver } from 'test/factories/make-delivery-driver'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '@/core/errors/errors/resource-already-exists-error'
 import { makeAdministrator } from 'test/factories/make-administrator'
-import { NotAllowedError } from '../errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryDeliveryDriverRepository: InMemoryDeliveryDriverRepository
 let sut: AddDeliveryDriverUseCase
