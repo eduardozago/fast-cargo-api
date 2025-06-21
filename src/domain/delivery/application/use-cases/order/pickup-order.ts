@@ -1,20 +1,17 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { Order, OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
-import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
-import { DeliveryDriverRepository } from '../../repositories/delivery-driver-repository'
+import { DriversRepository } from '../../repositories/drivers-repository'
 
 interface PickupOrderUseCaseRequest {
   orderId: string
-  deliveryDriverId: string
-  role: string
+  driverId: string
 }
 
 type PickupOrderUseCaseResponse = Either<
-  UnauthorizedError | ResourceNotFoundError | InvalidOrderStatusError,
+  ResourceNotFoundError | InvalidOrderStatusError,
   {
     order: Order
   }
@@ -23,36 +20,22 @@ type PickupOrderUseCaseResponse = Either<
 export class PickupOrderUseCase {
   constructor(
     private ordersRepository: OrdersRepository,
-    private deliveryDriversRepository: DeliveryDriverRepository,
+    private driversRepository: DriversRepository,
   ) {}
 
   async execute({
     orderId,
-    deliveryDriverId,
-    role,
+    driverId,
   }: PickupOrderUseCaseRequest): Promise<PickupOrderUseCaseResponse> {
-    const isValidRole = Object.values(UserRole).includes(role as UserRole)
-
-    if (!isValidRole) {
-      return left(new UnauthorizedError())
-    }
-
-    const validRole = role as UserRole
-
-    if (validRole !== UserRole.ADMIN) {
-      return left(new UnauthorizedError())
-    }
-
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
       return left(new ResourceNotFoundError())
     }
 
-    const deliveryDriver =
-      await this.deliveryDriversRepository.findById(deliveryDriverId)
+    const driver = await this.driversRepository.findById(driverId)
 
-    if (!deliveryDriver) {
+    if (!driver) {
       return left(new ResourceNotFoundError())
     }
 
