@@ -4,21 +4,21 @@ import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
 import { OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
 import { PickupOrderUseCase } from './pickup-order'
-import { InMemoryDeliveryDriverRepository } from 'test/respositories/in-memory-delivery-driver-repository'
-import { makeDeliveryDriver } from 'test/factories/make-delivery-driver'
+import { InMemoryDriversRepository } from 'test/respositories/in-memory-drivers-repository'
+import { makeDriver } from 'test/factories/make-driver'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository
-let inMemoryDeliveryDriversRepository: InMemoryDeliveryDriverRepository
+let inMemoryDriversRepository: InMemoryDriversRepository
 let sut: PickupOrderUseCase
 
 describe('Pickup Order', () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository()
-    inMemoryDeliveryDriversRepository = new InMemoryDeliveryDriverRepository()
+    inMemoryDriversRepository = new InMemoryDriversRepository()
 
     sut = new PickupOrderUseCase(
       inMemoryOrdersRepository,
-      inMemoryDeliveryDriversRepository,
+      inMemoryDriversRepository,
     )
   })
 
@@ -29,39 +29,19 @@ describe('Pickup Order', () => {
 
     inMemoryOrdersRepository.items.push(order)
 
-    const deliveryDriver = makeDeliveryDriver()
+    const driver = makeDriver()
 
-    inMemoryDeliveryDriversRepository.items.push(deliveryDriver)
+    inMemoryDriversRepository.items.push(driver)
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      deliveryDriverId: deliveryDriver.id.toString(),
-      role: 'ADMIN',
+      driverId: driver.id.toString(),
     })
 
     console.log(result)
 
     expect(result.isRight()).toBe(true)
     expect(result.value?.order.id).toEqual(order.id)
-  })
-
-  it('should not authorized to pickup an order if the user is not admin', async () => {
-    const order = makeOrder()
-
-    inMemoryOrdersRepository.items.push(order)
-
-    const deliveryDriver = makeDeliveryDriver()
-
-    inMemoryDeliveryDriversRepository.items.push(deliveryDriver)
-
-    const result = await sut.execute({
-      orderId: order.id.toString(),
-      deliveryDriverId: deliveryDriver.id.toString(),
-      role: 'DELIVERY_DRIVER',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 
   it('should not able to pickup an order if the status order is not "AVAILABLE"', async () => {
@@ -71,14 +51,13 @@ describe('Pickup Order', () => {
 
     inMemoryOrdersRepository.items.push(order)
 
-    const deliveryDriver = makeDeliveryDriver()
+    const driver = makeDriver()
 
-    inMemoryDeliveryDriversRepository.items.push(deliveryDriver)
+    inMemoryDriversRepository.items.push(driver)
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      deliveryDriverId: deliveryDriver.id.toString(),
-      role: 'ADMIN',
+      driverId: driver.id.toString(),
     })
 
     console.log(result)
