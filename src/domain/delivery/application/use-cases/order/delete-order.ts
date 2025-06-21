@@ -1,38 +1,19 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { OrdersRepository } from '../../repositories/orders-repository'
-import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 interface DeleteOrderUseCaseRequest {
   orderId: string
-  role: string
 }
 
-type DeleteOrderUseCaseResponse = Either<
-  NotAllowedError | ResourceNotFoundError,
-  null
->
+type DeleteOrderUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class DeleteOrderUseCase {
   constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,
-    role,
   }: DeleteOrderUseCaseRequest): Promise<DeleteOrderUseCaseResponse> {
-    const isValidRole = Object.values(UserRole).includes(role as UserRole)
-
-    if (!isValidRole) {
-      return left(new NotAllowedError())
-    }
-
-    const validRole = role as UserRole
-
-    if (validRole !== UserRole.ADMIN) {
-      return left(new NotAllowedError())
-    }
-
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
