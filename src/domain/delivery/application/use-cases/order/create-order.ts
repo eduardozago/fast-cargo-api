@@ -4,12 +4,10 @@ import { RecipientsRepository } from '../../repositories/recipients-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
 
 interface CreateOrderUseCaseRequest {
   recipientId: string
-  role: string
 }
 
 type CreateOrderUseCaseResponse = Either<
@@ -27,20 +25,7 @@ export class CreateOrderUseCase {
 
   async execute({
     recipientId,
-    role,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
-    const isValidRole = Object.values(UserRole).includes(role as UserRole)
-
-    if (!isValidRole) {
-      return left(new NotAllowedError())
-    }
-
-    const validRole = role as UserRole
-
-    if (validRole !== UserRole.ADMIN) {
-      return left(new NotAllowedError())
-    }
-
     const recipient = await this.recipientRepository.findById(recipientId)
 
     if (!recipient) {
