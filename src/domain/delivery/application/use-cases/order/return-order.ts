@@ -1,18 +1,15 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 import { Order, OrderStatus } from '@/domain/delivery/enterprise/entities/order'
 import { InvalidOrderStatusError } from '../errors/invalid-order-status-error'
-import { UnauthorizedError } from '@/core/errors/errors/unauthorized-error'
 
 interface ReturnOrderUseCaseRequest {
   orderId: string
-  role: string
 }
 
 type ReturnOrderUseCaseResponse = Either<
-  UnauthorizedError | ResourceNotFoundError | InvalidOrderStatusError,
+  ResourceNotFoundError | InvalidOrderStatusError,
   {
     order: Order
   }
@@ -23,20 +20,7 @@ export class ReturnOrderUseCase {
 
   async execute({
     orderId,
-    role,
   }: ReturnOrderUseCaseRequest): Promise<ReturnOrderUseCaseResponse> {
-    const isValidRole = Object.values(UserRole).includes(role as UserRole)
-
-    if (!isValidRole) {
-      return left(new UnauthorizedError())
-    }
-
-    const validRole = role as UserRole
-
-    if (validRole !== UserRole.ADMIN) {
-      return left(new UnauthorizedError())
-    }
-
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
