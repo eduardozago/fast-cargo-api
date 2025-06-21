@@ -1,6 +1,5 @@
 import { DeleteOrderUseCase } from './delete-order'
 import { makeOrder } from 'test/factories/make-order'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryOrdersRepository } from 'test/respositories/in-memory-orders-repository'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository
@@ -20,24 +19,9 @@ describe('Delete Order', () => {
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      role: 'ADMIN',
     })
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryOrdersRepository.items.length).toEqual(0)
-  })
-
-  it('should not be allowed to delete an order if the user is not admin', async () => {
-    const order = makeOrder()
-
-    inMemoryOrdersRepository.create(order)
-
-    const result = await sut.execute({
-      orderId: order.id.toString(),
-      role: 'DELIVER_DRIVER',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })
