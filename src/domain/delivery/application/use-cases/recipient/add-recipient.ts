@@ -1,18 +1,14 @@
-import { Either, left, right } from '@/core/either'
+import { Either, right } from '@/core/either'
 import { RecipientsRepository } from '../../repositories/recipients-repository'
 import { Recipient } from '@/domain/delivery/enterprise/entities/recipient'
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { UserRole } from '@/domain/delivery/enterprise/entities/user-role'
 
 interface AddRecipientUseCaseRequest {
   name: string
   address: string
-  role: string
 }
 
 type AddRecipientUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  null,
   {
     recipient: Recipient
   }
@@ -24,20 +20,7 @@ export class AddRecipientUseCase {
   async execute({
     name,
     address,
-    role,
   }: AddRecipientUseCaseRequest): Promise<AddRecipientUseCaseResponse> {
-    const isValidRole = Object.values(UserRole).includes(role as UserRole)
-
-    if (!isValidRole) {
-      return left(new NotAllowedError())
-    }
-
-    const validRole = role as UserRole
-
-    if (validRole !== UserRole.ADMIN) {
-      return left(new NotAllowedError())
-    }
-
     const recipient = Recipient.create({
       name,
       address,
