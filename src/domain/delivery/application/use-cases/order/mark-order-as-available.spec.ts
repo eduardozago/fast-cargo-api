@@ -22,28 +22,13 @@ describe('Mark Order as Available', () => {
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      role: 'ADMIN',
     })
 
     expect(result.isRight()).toBe(true)
     expect(result.value?.order.id).toEqual(order.id)
   })
 
-  it('should not authorized to mark an order as available if the user is not admin', async () => {
-    const order = makeOrder()
-
-    inMemoryOrdersRepository.items.push(order)
-
-    const result = await sut.execute({
-      orderId: order.id.toString(),
-      role: 'DELIVERY_DRIVER',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(UnauthorizedError)
-  })
-
-  it('should not able to mark an order as available if the status order is not "added"', async () => {
+  it('should not able to mark an order as available if the status order is not "ADDED"', async () => {
     const order = makeOrder({
       status: OrderStatus.DELIVERED,
     })
@@ -52,7 +37,6 @@ describe('Mark Order as Available', () => {
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      role: 'ADMIN',
     })
 
     expect(result.isLeft()).toBe(true)
