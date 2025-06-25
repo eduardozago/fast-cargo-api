@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   Administrator,
   AdministratorProps,
-} from '@/domain/cargo/enterprise/entities/administrator'
+} from '@/domain/delivery/enterprise/entities/administrator'
 import { faker } from '@faker-js/faker'
 
 export function makeAdministrator(

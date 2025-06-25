@@ -1,6 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import { RecipientsRepository } from '@/domain/cargo/application/repositories/recipients-repository'
-import { Recipient } from '@/domain/cargo/enterprise/entities/recipient'
+import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository'
+import { Recipient } from '@/domain/delivery/enterprise/entities/recipient'
 
 export class InMemoryRecipientRepository extends RecipientsRepository {
   public items: Recipient[] = []
