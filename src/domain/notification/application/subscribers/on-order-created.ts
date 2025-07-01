@@ -29,7 +29,7 @@ export class OnOrderCreated implements EventHandler {
         recipientId: recipient.id.toString(),
         title: 'New Delivery Order',
         content:
-          'A new delivery order has been created for you. Open the app to view the details.',
+          'A new delivery order has been created for you. It will be available for assignment soon.',
       })
     }
   }
