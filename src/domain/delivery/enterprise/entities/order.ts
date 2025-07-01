@@ -1,6 +1,7 @@
-import { UniqueEntityID } from '../../../../core/entities/unique-entity-id'
-import { Optional } from '../../../../core/types/optional'
-import { Entity } from '@/core/entities/entity'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Optional } from '@/core/types/optional'
+import { OrderCreatedEvent } from '../events/order-created-event'
 
 export enum OrderStatus {
   ADDED = 'ADDED',
@@ -18,7 +19,7 @@ export interface OrderProps {
   updatedAt?: Date
 }
 
-export class Order extends Entity<OrderProps> {
+export class Order extends AggregateRoot<OrderProps> {
   get deliveryDriverId() {
     return this.props.deliveryDriverId
   }
@@ -60,6 +61,12 @@ export class Order extends Entity<OrderProps> {
       },
       id,
     )
+
+    const isNewOrder = !id
+
+    if (isNewOrder) {
+      order.addDomainEvent(new OrderCreatedEvent(order))
+    }
 
     return order
   }
