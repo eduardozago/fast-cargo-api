@@ -48,5 +48,6 @@ describe('On Order Created', () => {
     await waitFor(() => {
       expect(sendNotificationExecutionSpy).toHaveBeenCalled()
     })
+    expect(inMemoryNotificationsRepository.items).toHaveLength(1)
   })
 })
