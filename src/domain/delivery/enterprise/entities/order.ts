@@ -2,6 +2,7 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { OrderCreatedEvent } from '../events/order-created-event'
+import { OrderStatusChangedEvent } from '../events/order-status-changed-event'
 
 export enum OrderStatus {
   ADDED = 'ADDED',
@@ -12,7 +13,7 @@ export enum OrderStatus {
 }
 
 export interface OrderProps {
-  deliveryDriverId?: UniqueEntityID
+  driverId?: UniqueEntityID | null
   recipientId: UniqueEntityID
   status: OrderStatus
   createdAt: Date
@@ -20,8 +21,8 @@ export interface OrderProps {
 }
 
 export class Order extends AggregateRoot<OrderProps> {
-  get deliveryDriverId() {
-    return this.props.deliveryDriverId
+  get driverId(): UniqueEntityID | undefined | null {
+    return this.props.driverId
   }
 
   get recipientId() {
@@ -44,9 +45,16 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.updatedAt = new Date()
   }
 
+  set driverId(driverId: UniqueEntityID) {
+    this.props.driverId = driverId
+  }
+
   set status(status: OrderStatus) {
-    this.props.status = status
-    this.touch()
+    if (status !== this.props.status) {
+      this.props.status = status
+      this.touch()
+      this.addDomainEvent(new OrderStatusChangedEvent(this))
+    }
   }
 
   static create(
