@@ -39,6 +39,8 @@ export class PickupOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    order.driverId = driver.id
+
     if (order.status !== OrderStatus.AVAILABLE) {
       return left(
         new InvalidOrderStatusError(order.status, OrderStatus.AVAILABLE),
