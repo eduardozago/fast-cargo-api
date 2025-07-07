@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountRole {
+  ADMIN
+  OPERATOR
+}
+
+model Account {
+  id  String  @id @default(uuid())
+  taxId String  @unique @map("tax_id")
+  password  String  
+  role  AccountRole @default(OPERATOR)
+
+  driver Driver?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt  @map("updated_at")
+
+  @@map("accounts")  
+}
+
+model Driver {
+  id  String  @id @default(uuid())
+  name  String
+
+  accountId String  @unique @map("account_id")
+  account Account @relation(fields: [accountId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt  @map("updated_at")  
+
+  @@map("drivers")
+}
